@@ -42,9 +42,7 @@ Place the ZIP file into your project's root directory, and declare the module an
 
 Don't forget to replace the `[YOUR_APP_PACKAGE_NAME]` with your app's package name, e.g. *com.companyname.app*, and you can read [Radius Networks' docs](http://altbeacon.github.io/android-beacon-library/configure.html) on this topic as well.
 
-See this example app for usage: TiBeacons Example App
-
-Become an iBeacon:
+Become an iBeacon: (only Nexus 9, Nexus 6, Samsung SM-G900F e SM-G900V)
 
 	var janusbeacons = require("com.alfonsojanus.beacons");
 
@@ -129,8 +127,6 @@ Find out if bluetooth is on or off (or unauthorized or unsupported or resetting)
 	TiBeacons.requestBluetoothStatus();
 
 ## Author
-
-![Alfonso Davide Pilato]
 
 * Alfonso Davide Pilato (Janus Company Software)
 * `alfonso.pilato@gmail.com`
