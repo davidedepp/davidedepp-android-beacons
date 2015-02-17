@@ -2,6 +2,46 @@
 
 ## Usage
 
+Place the ZIP file into your project's root directory, and declare the module and required android permissions in your `tiapp.xml` file (or in your custom `platform/android/AndroidManifest.xml` file if you are using that):
+
+	<ti:app>
+		...
+		<android xmlns:android="http://schemas.android.com/apk/res/android">
+			<manifest package="[YOUR_APP_PACKAGE_NAME]">
+				<uses-sdk	android:minSdkVersion="10"
+							android:targetSdkVersion="18"/>
+				<uses-permission
+					android:name="android.permission.BLUETOOTH"/>
+				<uses-permission
+					android:name="android.permission.BLUETOOTH_ADMIN"/>
+				<application>
+					<service	android:enabled="true"
+								android:exported="true"
+								android:isolatedProcess="false"
+								android:label="iBeacon"
+								android:name="com.radiusnetworks.ibeacon.service.IBeaconService">
+					</service>
+					<service	android:enabled="true"
+								android:name="com.radiusnetworks.ibeacon.IBeaconIntentProcessor">
+								<meta-data android:name="background" android:value="true" />
+						<intent-filter
+							android:priority="1" >
+							<action android:name="[YOUR_APP_PACKAGE_NAME].DID_RANGING"/>
+							<action android:name="[YOUR_APP_PACKAGE_NAME].DID_MONITORING"/>
+						</intent-filter>
+					</service>
+				</application>
+			</manifest>
+		</android>
+		...
+		<modules>
+			<module platform="android">com.alfonsojanus.beacons</module>
+		</modules>
+		...
+	</ti:app>
+
+Don't forget to replace the `[YOUR_APP_PACKAGE_NAME]` with your app's package name, e.g. *com.companyname.app*, and you can read [Radius Networks' docs](http://altbeacon.github.io/android-beacon-library/configure.html) on this topic as well.
+
 See this example app for usage: TiBeacons Example App
 
 Become an iBeacon:
@@ -45,6 +85,8 @@ Listen for region events:
 	TiBeacons.addEventListener("exitedRegion", alert);
 	TiBeacons.addEventListener("determinedRegionState", alert);
 	
+Decide whether you want auto-ranging, and turn it on via `TiBeacons.setAutoRange(true)` if you want it, or `TiBeacons.setAutoRange(false)` if not.	
+
 Start ranging beacons in a region. This takes takes more energy and will report the approximate distance of the device to the beacon.
 
 	TiBeacons.startRangingForBeacons({
@@ -65,9 +107,16 @@ Or just listen for beacon proximity changes:
 	TiBeacons.addEventListener("beaconProximity", function(e){
    		alert("beacon "+e.major+"/"+e.minor+" is now "+e.proximity);
 	});
+	
+Stopping monitoring/ranging
+
+To turn everything off:
+
+    TiBeacons.stopRangingForAllBeacons();
+    TiBeacons.stopMonitoringAllRegions();
 
 
-## Permission and Hardware Status
+## Hardware Status
 
 Find out if bluetooth is on or off (or unauthorized or unsupported or resetting):
 
@@ -81,9 +130,33 @@ Find out if bluetooth is on or off (or unauthorized or unsupported or resetting)
 
 ## Author
 
-TODO: Enter your author name, email and other contact
-details you want to share here.
+![Alfonso Davide Pilato]
+
+* Alfonso Davide Pilato (Janus Company Software)
+* `alfonso.pilato@gmail.com`
+* [`@davidedepp`](http://twitter.com/davidedepp)
 
 ## License
 
-TODO: Enter your license/legal information here.
+Copyright (c) 2014, Alfonso Davide Pilato Inc. All rights reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+## Notice
+
+This product includes software developed at
+[The Radius Networks](http://www.radiusnetworks.com/) (http://www.radiusnetworks.com/).
+
+Android IBeacon Service
+
+Copyright 2013 Radius Networks
